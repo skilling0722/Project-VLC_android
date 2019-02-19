@@ -13,8 +13,8 @@ public class Pwd_Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwd__register);
-        pwdVal = findViewById(R.id.new_pwd_btn1);
-        pwdVal2 = findViewById(R.id.new_pwd_btn2);
+        pwdVal = findViewById(R.id.pre_pwd_btn);
+        pwdVal2 = findViewById(R.id.new_pwd_btn);
     }
 
     public void pwd_confirm(View v){
@@ -30,7 +30,7 @@ public class Pwd_Register extends AppCompatActivity {
             if(pwd_test(str)){
                 Intent data = new Intent();
                 data.putExtra("password", str_to_bin(str)); //2진수문자열
-                setResult(0, data);
+                setResult(RESULT_OK, data);
                 finish();
             }
             else{

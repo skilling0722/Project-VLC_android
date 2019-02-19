@@ -1,5 +1,6 @@
 package com.VlcDoorLock;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -30,14 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.pwd_btn:
                 /*등록/변경 버튼활성화를 위한 부분*/
-                if(loadPwdSharedPreferences()){
-                    ((Button)v).setText("비번변경");
-                    pwd_change(v);
-
-                }else{
-                    ((Button)v).setText("비번등록");
-                    pwd_register(v);
-                }
+                if(loadPwdSharedPreferences()) pwd_change(v);
+                else pwd_register(v);
                 break;
             case R.id.setting_btn:
                 setting(v);
@@ -54,21 +49,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //현재화면에서 로딩바를 띄움 -> 등록완료 -> 로딩바만 종료
         setContentView(R.layout.activity_device__register);
     }
-    public void device_relieve(View v){
-        //기기 등록해제버튼 누르면 실행됨
-        ;
-    }
-
     public void pwd_register(View v){
         //비번을 폰에 캐시로 저장되는 걸 말함
         Intent intent = new Intent(getApplicationContext(), Pwd_Register.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, 100);
         //데이터 받아오면 shared에 저장
     }
     public void pwd_change(View v){
         //비번 변경버튼을 누르면 실행됨
-        Toast.makeText(getApplicationContext(), "변경Activity 실행", Toast.LENGTH_LONG).show();
-
+        Intent intent = new Intent(getApplicationContext(), Pwd_Change.class);
+        intent.putExtra("prePwd", valuePwdSharedPreferences()); //기존 비밀번호 보낸다.
+        startActivityForResult(intent, 111);
     }
 
     public void setting(View v){
@@ -90,14 +81,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     //shared에 값을 집어넣는다. 화면을 갱신한다.
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode != 0) return;
-        String pwdInfo = data.getStringExtra("password");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //100, 111
+        if(resultCode == RESULT_OK){
+            SharedPreferences.Editor editor = sp.edit();
+            switch(requestCode){
+                case 100: case 111:
+                    Toast.makeText(getApplicationContext(), "RESULT_OK 성공", Toast.LENGTH_SHORT).show();
+                    String pwdInfo = data.getStringExtra("password");
+                    editor.putString("password", pwdInfo);
+                    editor.commit();
+                    pwd_btn_resume();
+                    break;
 
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("password", pwdInfo);
-        editor.commit();
-        pwd_btn_resume();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "RESULT_OK 실패", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initSharedPreferences(){
@@ -105,20 +106,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private Boolean loadPwdSharedPreferences(){
         String str = sp.getString("password", "");
-        if (str.equals("")){
-            //Toast.makeText(getApplicationContext(), "등록된 비번없음", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else{
-            //Toast.makeText(getApplicationContext(), "등록된 비번 존재함", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
+        if (str.equals("")) return false;
+        else return true;
     }
-
+    private String valuePwdSharedPreferences(){
+        String str = sp.getString("password", "");
+        if (str.equals("")) return "";
+        else return str;
+    }
     public void pwd_btn_resume(){
         Button btn = findViewById(R.id.pwd_btn);
-        if(loadPwdSharedPreferences()){
+        if( loadPwdSharedPreferences() ){
             //비번변경
             btn.setText("비번변경");
         }
