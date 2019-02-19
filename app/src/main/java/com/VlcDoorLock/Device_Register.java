@@ -17,3 +17,5 @@ public class Device_Register extends AppCompatActivity {
 * ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
 * ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁaaaaaaa
 * */
+
+//commit test//
