@@ -1,14 +1,91 @@
 package com.VlcDoorLock;
-
+import android.content.pm.PackageManager;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 public class Device_Register extends AppCompatActivity {
+    String unique_id;
+    String bin_unique_id;
+
+    private CameraManager mCameraManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device__register);
+
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+            Toast.makeText(getApplicationContext(), "There is no camera flash.\n The app will finish", Toast.LENGTH_LONG);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 3000);
+            return;
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mCameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+        }
+
+        /*
+        20190219
+
+        단말정보 얻기
+         */
+        try{
+            unique_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+            Log.d("테스트", "ID: " + unique_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("오류", "단말정보 얻기 실패");
+        }
+
+
+        /*
+        20190219
+
+        단말정보 이진화
+         */
+
+        try{
+            bin_unique_id = str_to_bin(unique_id);
+            Log.d("테스트", "바이너리 ID: " + bin_unique_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("오류", "단말정보 이진화 실패");
+        }
+
+        /*
+        20190219
+
+        단말정보 담아서 보내기
+         */
+        try {
+            Flashlight flashlight = new Flashlight();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                flashlight.flashlight(mCameraManager, bin_unique_id, 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("오류", "기기등록 플래시라이트 실패");
+        }
+
+    }
+
+    public String str_to_bin(String tmpStr){
+        StringToBinary tmp = new StringToBinary();
+        tmp.toBinary(tmpStr);
+        return tmp.get();
     }
 }
 /*
