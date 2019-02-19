@@ -22,3 +22,4 @@ public class Device_Register extends AppCompatActivity {
 * 먼저 할 것은 uuid가져오기, 데이터 프레임 구성하기, 신호를 보내는 함수가 필요하다. 이것들은 비번등록등에서도
 * 공통적으로 쓰여진다. 따라서 따로 java파일을 생성해서 클래스로 만들 필요성이 있따.
 * */
+//branch checkout
