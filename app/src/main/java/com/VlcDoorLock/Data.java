@@ -16,4 +16,6 @@ public class Data {
         this.transmission_Data = transmission_Data.replace("00000", "000001");
     }
 }
+
 // 동시에 여러작업 22
+//동시에 여러작업하기 1
