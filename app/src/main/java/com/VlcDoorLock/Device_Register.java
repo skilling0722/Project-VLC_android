@@ -61,8 +61,12 @@ public class Device_Register extends AppCompatActivity {
 
         try{
             bin_unique_id = str_to_bin(unique_id);
-            Log.d("테스트", "바이너리 ID: " + bin_unique_id);
+            Log.d("테스트", "              바이너리 ID: " + bin_unique_id);
 
+            bin_unique_id = bin_unique_id.replace("00000", "000001");
+            Log.d("테스트", "프리앰블 방지 바이너리 ID: " + bin_unique_id);
+
+            Log.d("테스트", "응가" + bin_unique_id.length());
             /*추가 */
             Intent data = new Intent();
             data.putExtra("deviceInfo", bin_unique_id); //2진수문자열

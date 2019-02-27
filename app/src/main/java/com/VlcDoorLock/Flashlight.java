@@ -48,7 +48,7 @@ public class Flashlight{
         /*
         온오프 딜레이
          */
-        long blinkDelay = 100;
+        long blinkDelay = 500;
 
         /*
         Preamble.java
@@ -128,7 +128,7 @@ public class Flashlight{
         송신 데이터 = 프리앰블 + 데이터 타입 결정 + 데이터 + 종료 코드
          */
         String Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + Data.transmission_Data + exit.exit_code;
-
+//        String Send_data = preamble.preamble_code + Data_type.Data_type_code + "0110" + "1001" + exit.exit_code;
         Log.d("테스트", "송신 비트 체크: " + Send_data);
 
 
