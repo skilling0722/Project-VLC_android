@@ -117,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         * 알림고정, 자동로그인 10데이터 받아오기
         * */
         Toast.makeText(getApplicationContext(), "setting 실행", Toast.LENGTH_LONG).show();
-
+        Intent intent = new Intent(getApplicationContext(), Setting.class);
+        startActivityForResult(intent, 222);
     }
 
     public void open_door(View v){
