@@ -31,6 +31,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
             Log.d("오류", "pwd_btn_resume 호출 실패");
         }
+
+        try {
+            open_door_btn_resume();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("오류", "open_door_btn_resume 호출 실패");
+        }
     }
 
     @Override
@@ -89,8 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //setContentView(R.layout.activity_device__register);
 
         Intent device_regist_intent = new Intent(MainActivity.this, Device_Register.class);
-
-        startActivity(device_regist_intent);
+        startActivityForResult(device_regist_intent, 1010);
     }
     public void pwd_register(View v){
         //비번을 폰에 캐시로 저장되는 걸 말함
@@ -118,12 +124,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*
         device, pwd등록 검사 하고, 보내기
         * */
+
         Toast.makeText(getApplicationContext(), "open 실행", Toast.LENGTH_LONG).show();
         //shared에서 비번 가져오기
-        String str = Shared_Pre.getString("password", "");
-        Intent open_door_intent = new Intent(MainActivity.this, Open_door.class);
-        open_door_intent.putExtra("stored_pwd", str);
-        startActivity(open_door_intent);
+        String pwd_str = Shared_Pre.getString("password", "");
+        String device_str = Shared_Pre.getString("device_info", "");
+
+        Intent open_door_pwd_intent = new Intent(MainActivity.this, Open_door.class);
+        open_door_pwd_intent.putExtra("stored_pwd", pwd_str);
+        open_door_pwd_intent.putExtra("stored_device_info", device_str);
+        startActivity(open_door_pwd_intent);
+
+
     }
 
     @Override
@@ -139,8 +151,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     editor.putString("password", pwdInfo);
                     editor.commit();
                     pwd_btn_resume();
+                    open_door_btn_resume();
                     break;
-
+                case 1010:
+                    String device_info = data.getStringExtra("deviceInfo");
+                    editor.putString("device_info", device_info);
+                    editor.commit();
+                    device_btn_resume();
+                    open_door_btn_resume();
+                    break;
             }
         }
         else{
@@ -156,6 +175,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (str.equals("")) return false;
         else return true;
     }
+    private Boolean loadDeviceSharedPreferences(){
+        String str = Shared_Pre.getString("device_info", "");
+        if (str.equals("")) return false;
+        else return true;
+    }
+
+
+
     private String valuePwdSharedPreferences(){
         String str = Shared_Pre.getString("password", "");
         if (str.equals("")) return "";
@@ -170,6 +197,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else{
             //비번등록
             btn.setText("비번등록");
+        }
+    }
+    public void device_btn_resume(){
+        Button btn = findViewById(R.id.device_btn);
+        if( loadDeviceSharedPreferences() ){
+            //비번변경
+            btn.setText("기기등록완료");
+            btn.setEnabled(false);
+        }
+        else{
+            //비번등록
+            btn.setText("기기등록");
+        }
+    }
+
+    public void open_door_btn_resume(){
+        Button btn = findViewById(R.id.open_door_btn);
+        if( loadDeviceSharedPreferences() && loadPwdSharedPreferences() ){
+
+            btn.setEnabled(true);
+        }
+        else{
+
+            btn.setEnabled(false);
         }
     }
 

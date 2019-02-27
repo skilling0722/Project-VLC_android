@@ -1,6 +1,7 @@
 package com.VlcDoorLock;
 
 
+import android.bluetooth.BluetoothClass;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
@@ -16,12 +17,13 @@ public class Flashlight{
     private Preamble preamble;
     private Exit exit;
     private Data Data;
+    private String Device_info;
 
     private  boolean mFlashOn;
     private  String mCameraId;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void flashlight(CameraManager mCameraManager, String bin_Data, int type) {
+    public void flashlight(CameraManager mCameraManager, String bin_Data, String bin_device_info,int type) {
         if (mCameraId == null) {
             try {
                 for (String id : mCameraManager.getCameraIdList()) {
@@ -72,6 +74,10 @@ public class Flashlight{
         }
 
 
+
+
+
+
         /*
         Data_type.java 파일
 
@@ -88,6 +94,16 @@ public class Flashlight{
         } catch (Exception e) {
             e.printStackTrace();
             Log.d("오류", "get_Data_type 호출 실패");
+        }
+
+         /*
+        기기 정보
+         */
+        try {
+            get_Device_info(bin_device_info);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("오류", "get_Device_info 호출 실패");
         }
 
 
@@ -111,7 +127,7 @@ public class Flashlight{
         /*
         송신 데이터 = 프리앰블 + 데이터 타입 결정 + 데이터 + 종료 코드
          */
-        String Send_data = preamble.preamble_code + Data_type.Data_type_code + Data.transmission_Data + exit.exit_code;
+        String Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + Data.transmission_Data + exit.exit_code;
 
         Log.d("테스트", "송신 비트 체크: " + Send_data);
 
@@ -195,6 +211,13 @@ public class Flashlight{
 
         Log.d("테스트", "종료 변수 체크: " + exit.exit_code);
     }
+
+    private void get_Device_info(String bin_device_info) {
+        Device_info = bin_device_info;
+
+        Log.d("테스트", "문열기 기기정보 체크: " + Device_info);
+    }
+
 
     private void get_Data(String bin_Data) {
         Data = new Data();

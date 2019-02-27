@@ -1,4 +1,5 @@
 package com.VlcDoorLock;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
@@ -44,6 +45,7 @@ public class Device_Register extends AppCompatActivity {
          */
         try{
             unique_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
             Log.d("테스트", "ID: " + unique_id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +62,13 @@ public class Device_Register extends AppCompatActivity {
         try{
             bin_unique_id = str_to_bin(unique_id);
             Log.d("테스트", "바이너리 ID: " + bin_unique_id);
+
+            /*추가 */
+            Intent data = new Intent();
+            data.putExtra("deviceInfo", bin_unique_id); //2진수문자열
+            setResult(RESULT_OK, data);
+            finish(); //종료
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.d("오류", "단말정보 이진화 실패");
@@ -70,6 +79,7 @@ public class Device_Register extends AppCompatActivity {
 
         단말정보 담아서 보내기
          */
+        /*
         try {
             Flashlight flashlight = new Flashlight();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -79,6 +89,7 @@ public class Device_Register extends AppCompatActivity {
             e.printStackTrace();
             Log.d("오류", "기기등록 플래시라이트 실패");
         }
+        */
 
     }
 

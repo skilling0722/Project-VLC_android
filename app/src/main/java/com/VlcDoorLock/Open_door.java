@@ -14,6 +14,8 @@ import android.widget.Toast;
 public class Open_door extends AppCompatActivity {
     private CameraManager mCameraManager;
     String stored_pwd;
+    String stored_device_info;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +48,18 @@ public class Open_door extends AppCompatActivity {
         }
 
         try{
+            Intent device_intent = getIntent();
+            stored_device_info = device_intent.getStringExtra("stored_device_info");
+            Log.d("테스트", "저장된 기기정보" + stored_device_info);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("오류", "stored_device_info 가져오기 실패");
+        }
+
+        try{
             Flashlight flashlight = new Flashlight();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                flashlight.flashlight(mCameraManager, stored_pwd, 3);
+                flashlight.flashlight(mCameraManager, stored_pwd, stored_device_info, 3);
             }
         } catch (Exception e) {
             e.printStackTrace();
