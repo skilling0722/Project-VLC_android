@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Setting"></activity>
+        <activity android:name=".DoorActivity"></activity>
+        <activity android:name=".PhoneActivity" />
+        <activity android:name=".Setting" />
         <activity android:name=".Open_door" />
         <activity android:name=".Pwd_Change" />
         <activity android:name=".Device_Register" />
