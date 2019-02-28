@@ -35,7 +35,7 @@ public class Pwd_Change extends AppCompatActivity {
                 finish();
             }
             else{
-                Toast.makeText(getApplicationContext(), "길이는 8~16, 문자와 숫자의 조합만 가능합니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "길이는 8글자 문자와 숫자의 조합만 가능합니다.", Toast.LENGTH_LONG).show();
             }
         }
     }

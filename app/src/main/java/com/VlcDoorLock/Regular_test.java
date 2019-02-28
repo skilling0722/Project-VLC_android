@@ -12,7 +12,7 @@ public class Regular_test{
     String reg;
     public void set(String _msg){
         this.msg = _msg;
-        this.reg = "[a-zA-Z0-9]{6,18}";
+        this.reg = "[a-zA-Z0-9]{8,8}";
     }
     public Boolean get(){
         Boolean tf = (msg!=null) ? true:false;
