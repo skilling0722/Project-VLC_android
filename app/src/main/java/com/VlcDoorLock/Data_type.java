@@ -15,9 +15,5 @@ public class Data_type {
         Data_type_code = "010";
     }
 
-    public void Set_password_input() {
-        Data_type_code = "011";
-    }
-
-    public void Set_open_door() { Data_type_code = "100";}
+    public void Set_open_door() { Data_type_code = "011";}
 }

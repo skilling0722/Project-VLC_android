@@ -18,6 +18,7 @@ public class Flashlight{
     private Exit exit;
     private Data Data;
     private String Device_info;
+    private String Send_data;
 
     private  boolean mFlashOn;
     private  String mCameraId;
@@ -127,8 +128,22 @@ public class Flashlight{
         /*
         송신 데이터 = 프리앰블 + 데이터 타입 결정 + 데이터 + 종료 코드
          */
-        String Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + Data.transmission_Data + exit.exit_code;
-//        String Send_data = preamble.preamble_code + Data_type.Data_type_code + "0110" + "1001" + exit.exit_code;
+
+//        if ( Data_type.Data_type_code.equals("100") ){
+//            //기기등록 프리앰블 종류비트 기기정보 종료비트
+//            Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + exit.exit_code;
+//
+//        } else if ( Data_type.Data_type_code.equals("101") ){
+//            //비번 변경 프리앰블 종류비트 기기정보 기존비번 변경할비번 종료비트
+//            Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + Data.transmission_Data + exit.exit_code;
+//
+//        } else if ( Data_type.Data_type_code.equals("110") ){
+//            //문열기    프리앰블 종류비트 기기정보 비번 종료비트
+//            Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + Data.transmission_Data + exit.exit_code;
+//
+//        }
+
+        String Send_data = preamble.preamble_code + Data_type.Data_type_code + Device_info + "0110" + "1001" + exit.exit_code;
         Log.d("테스트", "송신 비트 체크: " + Send_data);
 
 
@@ -185,9 +200,7 @@ public class Flashlight{
                 //비번 변경 010
                 Data_type.Set_password_change();
             } else if ( type == 2 ) {
-                //비번 등록 011
-                Data_type.Set_password_input();
-            } else if ( type == 3 ){
+                //문열기 011
                 Data_type.Set_open_door();
             } else {
                 Log.d("테스트", "데이터 종류 비트 확인 불가 " + type);

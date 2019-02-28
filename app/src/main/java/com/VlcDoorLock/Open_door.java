@@ -59,7 +59,7 @@ public class Open_door extends AppCompatActivity {
         try{
             Flashlight flashlight = new Flashlight();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                flashlight.flashlight(mCameraManager, stored_pwd, stored_device_info, 3);
+                flashlight.flashlight(mCameraManager, stored_pwd, stored_device_info, 2);
             }
         } catch (Exception e) {
             e.printStackTrace();
